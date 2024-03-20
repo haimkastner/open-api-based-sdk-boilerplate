@@ -1,0 +1,87 @@
+name: open-api-based-sdk-boilerplate
+
+on: [push,workflow_dispatch] # Run this workflow on commit push, *and* if  this workflow triggers from API call to GitHub, this will be used for trigger buigl and release on server API change.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Prepare dependencies
+        run: |
+          npm i -g yarn
+          yarn install --frozen-lockfile 
+          yarn prebuild
+
+      - name: Build & Test 🔧
+        run: |
+          yarn build
+          yarn test
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Prepare dependencies
+        run: |
+          npm i -g yarn
+          yarn install --frozen-lockfile 
+          yarn prebuild
+
+      - name: Bomb Version
+        id: update_version
+        run: |
+          git pull
+          version=$(npm --no-git-tag-version --tag-version-prefix= version patch)
+          echo $version
+          echo "VERSION=$version" >> $GITHUB_OUTPUT
+
+      - name: Get version info
+        id: version_info
+        run: |
+          body=$(git log -1 --pretty=%B | sed -n '1p')
+          echo "BODY=$body" >> $GITHUB_OUTPUT
+
+      - name: Commit and push version
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: Update to version ${{ steps.update_version.outputs.VERSION }} [skip-ci]
+
+      - name: Publish package on NPM 📦
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.update_version.outputs.VERSION }}
+          name: Package Version ${{ steps.update_version.outputs.VERSION }}
+          body: ${{  steps.version_info.outputs.BODY }}
+          draft: false
+          prerelease: false
+
+      - name: Commit and push generated docs update
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: Update gen docs for version ${{ steps.update_version.outputs.VERSION }} [skip-ci]
