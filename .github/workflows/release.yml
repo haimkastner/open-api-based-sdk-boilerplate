@@ -37,11 +37,12 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Prepare dependencies
+      - name: Prepare package
         run: |
           npm i -g yarn
           yarn install --frozen-lockfile 
           yarn prebuild
+          yarn build
 
       - name: Bomb Version
         id: update_version
