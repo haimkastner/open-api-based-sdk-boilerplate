@@ -64,7 +64,7 @@ jobs:
           commit_message: Update to version ${{ steps.update_version.outputs.VERSION }} [skip-ci]
 
       - name: Publish package on NPM 📦
-        run: npm publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
