@@ -1,6 +1,6 @@
 {
   "name": "@haimkastner/open-api-based-sdk-boilerplate",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Build API server fast and produce an SDK - SDK boilerplate",
   "main": "dist/index.js",
   "files": [
