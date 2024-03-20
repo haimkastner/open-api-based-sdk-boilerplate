@@ -1,5 +1,7 @@
 # OpenAPI based SDK boilerplate
 
+[![open-api-based-sdk-boilerplate](https://github.com/haimkastner/open-api-based-sdk-boilerplate/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/haimkastner/open-api-based-sdk-boilerplate/actions/workflows/release.yml)
+
 Produce an SDK from API Server OpenAPI spec, easily.
 
 
