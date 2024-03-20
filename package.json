@@ -1,0 +1,36 @@
+{
+  "name": "@haimkastner/open-api-based-sdk-boilerplate",
+  "version": "1.0.0",
+  "description": "Build API server fast and produce an SDK - SDK boilerplate",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "fetch-spec": "node ./scripts/fetch-spec.js",
+    "generate-api": "openapi-generator-cli generate",
+    "prebuild": "npm run fetch-spec && npm run generate-api",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haimkastner/open-api-based-sdk-boilerplate.git"
+  },
+  "author": "Haim Kastner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haimkastner/open-api-based-sdk-boilerplate/issues"
+  },
+  "homepage": "https://github.com/haimkastner/open-api-based-sdk-boilerplate#readme",
+  "dependencies": {
+    "cross-fetch": "^4.0.0",
+    "url": "^0.11.3"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.13.1",
+    "@types/node": "^20.11.30",
+    "dotenv": "^16.4.5",
+    "fs-extra": "^11.2.0",
+    "typescript": "^4.7.4"
+  }
+}
