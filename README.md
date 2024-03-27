@@ -15,7 +15,7 @@ SDK built by [openapi-generator-cli](https://github.com/OpenAPITools/openapi-gen
 
 
 ---
-📙 For all info of how to create and build it, see [Perfect API Server - Generating SDK](https://blog.castnet.club/en/blog/perfect-api-server-part-d) article in [my blog](https://blog.castnet.club/en) 📙
+📙 For all info of how to create and build it, see [Perfect API Server - Generating SDK](https://blog.castnet.club/en/blog/perfect-api-server-part-d-sdk) article in [my blog](https://blog.castnet.club/en) 📙
 
 ---
 
